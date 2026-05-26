@@ -1,0 +1,40 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: .NET 8 — build & test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: recipe-manager.backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore RecipeManager.sln
+
+      - name: Build (Release)
+        run: dotnet build RecipeManager.sln --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test RecipeManager.sln --no-build --configuration Release --logger "trx;LogFileName=results.trx" --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: recipe-manager.backend/TestResults/*.trx

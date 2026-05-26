@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-Item -ItemType Directory -Force \"c:\\\\Users\\\\fragui\\\\Documents\\\\Courses\\\\workspace\\\\recipe-manager.backend\\\\src\\\\RecipeManager.API\\\\Controllers\")",
+      "Bash(dotnet test *)",
+      "Bash(npm test *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
